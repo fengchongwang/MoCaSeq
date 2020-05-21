@@ -1,11 +1,10 @@
 FROM ubuntu:18.04
 
-LABEL org.label-schema.name="MoCaSeq"
-LABEL org.label-schema.vcs-url="https://github.com/roland-rad-lab/MoCaSeq"
+LABEL org.label-schema.name="MoCaSeq" # Forked from roland-rad-lab/MoCaSeq, then add some functionality
+LABEL org.label-schema.vcs-url="https://github.com/fengchongwang/MoCaSeq"
 
 LABEL author="mathias.friedrich [@] tum.de"
 LABEL maintainer="sebastian.lange [@] tum.de"
-LABEL org.label-schema.url="https://www.imo.med.tum.de"
 
 ENV TARGET_DIR /var/pipeline
 ENV PACKAGE_DIR=/opt
