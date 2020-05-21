@@ -1,6 +1,7 @@
 FROM ubuntu:18.04
 
-LABEL org.label-schema.name="MoCaSeq" # Forked from roland-rad-lab/MoCaSeq, then add some functionality
+LABEL org.label-schema.name="MoCaSeq" 
+## Forked from roland-rad-lab/MoCaSeq, then add some functionality
 LABEL org.label-schema.vcs-url="https://github.com/fengchongwang/MoCaSeq"
 
 LABEL author="mathias.friedrich [@] tum.de"
