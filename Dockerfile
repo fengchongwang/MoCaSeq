@@ -95,6 +95,13 @@ RUN	apt update \
 		xvfb \
 		zip \
 		zlib1g-dev \
+		vim \
+		less \
+		libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6 \
+RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh \
+    && wget --quiet https://repo.continuum.io/archive/Anaconda3-4.3.0-Linux-x86_64.sh \
+    && /bin/bash /Anaconda3-4.3.0-Linux-x86_64.sh -b -p /opt/conda \
+    && rm /Anaconda3-4.3.0-Linux-x86_64.sh \
 	&& add-apt-repository 'ppa:openjdk-r/ppa' \
 	&& add-apt-repository 'ppa:git-core/ppa' \
 	&& apt update \
@@ -332,6 +339,9 @@ RUN	cd ${TEMP_DIR} \
 	&& tar -xjf manta-1.6.0.centos6_x86_64.tar.bz2 \
 	&& mv manta-1.6.0.centos6_x86_64 ${PACKAGE_DIR}/manta-1.6.0 \
 	&& rm manta-1.6.0.centos6_x86_64.tar.bz2 \
+# VS Code
+        && wget -nv https://az764295.vo.msecnd.net/stable/5763d909d5f12fe19f215cbfdd29a91c0fa9208a/code_1.45.1-1589445302_amd64.deb \
+	&& sudo apt install -y --no-install-recommends ./code_1.45.1-1589445302_amd64.deb \
 # VariantQC 1.07 (https://github.com/BimberLab/DISCVRSeq)	
 	&& cd ${TEMP_DIR} \
 	&& wget -nv 'https://github.com/BimberLab/DISCVRSeq/releases/download/1.07/DISCVRSeq-1.07.jar' \
@@ -379,7 +389,8 @@ RUN	cd ${TEMP_DIR} \
 	&& wget -nv 'https://github.com/mskcc/vcf2maf/archive/v1.6.17.tar.gz' \
 	&& tar -xzf v1.6.17.tar.gz \
 	&& mv ./vcf2maf-1.6.17 ${PACKAGE_DIR} \
-	&& rm -rf v1.6.17.tar.gz
+	&& rm -rf v1.6.17.tar.gz 
+ENV PATH=/opt/conda/bin:$PATH
 
 WORKDIR /var/pipeline/
 
