@@ -967,7 +967,7 @@ if [ $sequencing_type = 'WGS' ] && [ $Delly = 'yes' ] && [ $runmode = "MS" ]; th
 	-f somatic -o $name/results/Delly/$name.bcf \
 	-s $genome_dir/Samples.tsv $name/results/Delly/$name.pre.bcf
 
-	bcftools view $name/results/Delly/$name.pre.bcf \
+	bcftools view --threads $threads $name/results/Delly/$name.pre.bcf \
 	> $name/results/Delly/$name.pre.vcf
 fi
 
