@@ -10,6 +10,8 @@
 
 VersionMouse=$1
 config_file=$2
+n_threads=$3
+n_mem=$4
 
 species=Mouse
 
@@ -26,11 +28,11 @@ mkdir -p ref/$VersionMouse/primary_index
 
 bwa index -p "ref/"$VersionMouse"/primary_index/bwa_index" -a bwtsw "ref/"$VersionMouse"/"$VersionMouse"_primary.fna"
 
-bwa mem ref/$VersionMouse/primary_index/bwa_index ref/$VersionMouse/haplotypes.fastq > ref/$VersionMouse/alt_mapping_unsorted.sam
+bwa mem -t $n_threads ref/$VersionMouse/primary_index/bwa_index ref/$VersionMouse/haplotypes.fastq > ref/$VersionMouse/alt_mapping_unsorted.sam
 
-samtools sort -O sam -o ref/$VersionMouse/alt_mapping_nosup.sam ref/$VersionMouse/alt_mapping_unsorted.sam
+samtools sort -@ $n_threads -m "${n_mem}"G -O sam -o ref/$VersionMouse/alt_mapping_nosup.sam ref/$VersionMouse/alt_mapping_unsorted.sam
 
-samtools view -h -o ref/$VersionMouse/alt_mapping.sam -F 0x800 ref/$VersionMouse/alt_mapping_nosup.sam
+samtools view -@ $n_threads -h -o ref/$VersionMouse/alt_mapping.sam -F 0x800 ref/$VersionMouse/alt_mapping_nosup.sam
 
 mkdir -p ref/$VersionMouse/tmp
 

@@ -10,6 +10,8 @@
 
 config_file=$1
 temp_dir=$2
+n_threads=$3
+n_mem=$4
 
 species=Mouse
 
@@ -33,7 +35,7 @@ echo '---- Copying over files from repository ----' | tee -a "ref/"$VersionMouse
 date | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 
 cp $repository_dir"/../data/GRCm38.canonical_chromosomes.bed" "ref/"$VersionMouse"/"
-bgzip "ref/"$VersionMouse"/GRCm38.canonical_chromosomes.bed"
+bgzip -@ $n_threads "ref/"$VersionMouse"/GRCm38.canonical_chromosomes.bed"
 tabix -p bed "ref/"$VersionMouse"/GRCm38.canonical_chromosomes.bed.gz"
 
 cp $repository_dir"/../data/GRCm38.Census_allMon_Jan_15_11_46_18_2018_mouse.tsv" "ref/"$VersionMouse"/"
@@ -59,7 +61,7 @@ mv "ref/"$VersionMouse"/GCA_000001635.8_"$VersionMouse"_genomic.fna" "ref/"$Vers
 echo '---- Generate BWA Index ----' | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 date | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 
-sh $repository_dir/Preparation_GenerateBWAIndex.sh $VersionMouse $config_file
+sh $repository_dir/Preparation_GenerateBWAIndex.sh $VersionMouse $config_file $n_threads $n_mem
 
 echo '---- Generate sequence dictionary ----' | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 date | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
@@ -93,7 +95,7 @@ rm "ref/"$VersionMouse"/VEP/mus_musculus_vep_96_GRCm38.tar.gz "
 echo '---- Generate customized Sanger DB ----' | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 date | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 
-sh $repository_dir/Preparation_GenerateSangerMouseDB.sh $VersionMouse $temp_dir
+sh $repository_dir/Preparation_GenerateSangerMouseDB.sh $VersionMouse $temp_dir $n_threads $n_mem
 rm $temp_dir
 
 wget -nv -c -r -P ref/"$VersionMouse"/ ftp://ftp-mouse.sanger.ac.uk/REL-1807-SNPs_Indels/mgp.v6.merged.norm.snp.indels.sfiltered.vcf.gz
@@ -103,7 +105,7 @@ mv ref/"$VersionMouse"/ftp-mouse.sanger.ac.uk/REL-1807-SNPs_Indels/mgp.v6.merged
 rm -r ref/"$VersionMouse"/ftp-mouse.sanger.ac.uk/REL-1807-SNPs_Indels/
 rm -r ref/"$VersionMouse"/ftp-mouse.sanger.ac.uk/
 
-bcftools view -s ^CAST_EiJ,SPRET_EiJ,PWK_PhJ,WSB_EiJ,MOLF_EiJ,ZALENDE_EiJ,LEWES_EiJ --min-ac=1 --no-update ref/"$VersionMouse"/MGP.v6.snp_and_indels.vcf.gz -O z -o ref/"$VersionMouse"/MGP.v6.snp_and_indels.exclude_wild.vcf.gz
+bcftools view --threads $n_threads -s ^CAST_EiJ,SPRET_EiJ,PWK_PhJ,WSB_EiJ,MOLF_EiJ,ZALENDE_EiJ,LEWES_EiJ --min-ac=1 --no-update ref/"$VersionMouse"/MGP.v6.snp_and_indels.vcf.gz -O z -o ref/"$VersionMouse"/MGP.v6.snp_and_indels.exclude_wild.vcf.gz
 tabix -p vcf ref/"$VersionMouse"/MGP.v6.snp_and_indels.exclude_wild.vcf.gz
 
 rm "ref/"$VersionMouse"/MGP.v6.snp_and_indels.vcf.gz"

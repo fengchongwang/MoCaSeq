@@ -198,7 +198,7 @@ if [ -z $genome_dir/GetReferenceData.txt ]; then
 	echo -e "$(date) \t timestamp: $(date +%s)" | tee -a $name/results/QC/$name.report.txt
     rm -rf $genome_dir
 	if [ $species = 'Mouse' ]; then
-		sh $repository_dir/Preparation_GetReferenceDataMouse.sh $config_file $temp_dir
+		sh $repository_dir/Preparation_GetReferenceDataMouse.sh $config_file $temp_dir $threads $RAM
 	fi
 elif ! grep -Fxq "DONE" $genome_dir/GetReferenceData.txt
 	then
@@ -206,7 +206,7 @@ elif ! grep -Fxq "DONE" $genome_dir/GetReferenceData.txt
 	echo -e "$(date) \t timestamp: $(date +%s)" | tee -a $name/results/QC/$name.report.txt
     rm -rf $genome_dir
 	if [ $species = 'Mouse' ]; then
-		sh $repository_dir/Preparation_GetReferenceDataMouse.sh $config_file $temp_dir
+		sh $repository_dir/Preparation_GetReferenceDataMouse.sh $config_file $temp_dir $threads $RAM
 	fi
 else
 	echo '---- Reference files found! ----' | tee -a $name/results/QC/$name.report.txt
