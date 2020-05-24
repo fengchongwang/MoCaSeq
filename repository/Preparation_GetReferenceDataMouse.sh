@@ -35,8 +35,8 @@ echo '---- Copying over files from repository ----' | tee -a "ref/"$VersionMouse
 date | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 
 cp $repository_dir"/../data/GRCm38.canonical_chromosomes.bed" "ref/"$VersionMouse"/"
-bgzip -@ $n_threads "ref/"$VersionMouse"/GRCm38.canonical_chromosomes.bed"
-tabix -p bed "ref/"$VersionMouse"/GRCm38.canonical_chromosomes.bed.gz"
+# bgzip -@ $n_threads "ref/"$VersionMouse"/GRCm38.canonical_chromosomes.bed"
+tabix -p bed "ref/"$VersionMouse"/GRCm38.canonical_chromosomes.bed"
 
 cp $repository_dir"/../data/GRCm38.Census_allMon_Jan_15_11_46_18_2018_mouse.tsv" "ref/"$VersionMouse"/"
 
@@ -90,7 +90,7 @@ date | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 wget -nv -P "ref/"$VersionMouse"/VEP" ftp://ftp.ensembl.org/pub/release-96/variation/indexed_vep_cache/mus_musculus_vep_96_GRCm38.tar.gz
 tar -xzf "ref/"$VersionMouse"/VEP/mus_musculus_vep_96_GRCm38.tar.gz"
 mv mus_musculus "ref/"$VersionMouse"/VEP/"
-rm "ref/"$VersionMouse"/VEP/mus_musculus_vep_96_GRCm38.tar.gz "
+rm "ref/VEP/mus_musculus_vep_96_GRCm38.tar.gz "
 
 echo '---- Generate customized Sanger DB ----' | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
 date | tee -a "ref/"$VersionMouse"/GetReferenceData.txt"
