@@ -385,6 +385,8 @@ WORKDIR /var/pipeline/
 
 RUN cd ${PACKAGE_DIR} \
 	&& git clone https://github.com/fengchongwang/MoCaSeq.git \
+	&& cd ${PACKAGE_DIR}/MoCaSeq \
+	&& git lfs pull \
 	&& cd ${PACKAGE_DIR}/MoCaSeq/ \
     && chmod 775 entrypoint.sh \
     && chmod 775 MoCaSeq.sh \
